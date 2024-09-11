@@ -1,0 +1,76 @@
+ORG 100h
+NUM1 DW 5743h
+NUM2 DW 5740h
+START:
+MOV AX, NUM1
+sub AX, NUM2
+MOV BX, AX
+MOV AH, BH
+SHR AH, 4
+ADD AH, 30h
+CMP AH, 39h
+JLE PRINT_HIGH_NIBBLE
+ADD AH, 7
+PRINT_HIGH_NIBBLE:
+MOV DL, AH
+MOV AH, 02h
+INT 21h
+MOV AH, BH
+
+AND AH, 0Fh
+ADD AH, 30h
+CMP AH, 39h
+JLE PRINT_LOW_NIBBLE
+ADD AH, 7
+PRINT_LOW_NIBBLE:
+MOV DL, AH
+MOV AH, 02h
+INT 21h
+MOV AH, BL
+SHR AH, 4
+ADD AH, 30h
+CMP AH, 39h
+JLE PRINT_HIGH_NIBBLE2
+ADD AH, 7
+PRINT_HIGH_NIBBLE2:
+MOV DL, AH
+MOV AH, 02h
+INT 21h
+MOV AH, BL
+AND AH, 0Fh
+ADD AH, 30h
+CMP AH, 39h
+JLE PRINT_LOW_NIBBLE2
+ADD AH, 7
+PRINT_LOW_NIBBLE2:
+MOV DL, AH
+MOV AH, 02h
+INT 21h
+MOV AH, 4Ch
+INT 21h
+
+print_high:
+    mov     dl, ah      
+    mov     ah, 02h     
+    int     21h        
+    
+   
+    mov     ah, bl      
+    and     ah, 0Fh     
+    add     ah, 30h    
+    cmp     ah, 39h     
+    jle     print_low   
+    add     ah, 7      
+
+print_low:
+    mov     dl, ah      
+    mov     ah, 02h   
+    int     21h        
+    
+  
+    mov     ah, 0     
+    int     16h        
+    
+
+    mov     ax, 4C00h   
+    int     21h   
